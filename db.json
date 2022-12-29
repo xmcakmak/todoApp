@@ -1,0 +1,41 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "title": "Markete git",
+      "status": 1
+    },
+    {
+      "id": 2,
+      "title": "Evi temizle",
+      "status": 2
+    },
+    {
+      "id": 3,
+      "title": "Araştırma yap",
+      "status": 3
+    },
+    {
+      "id": 1672346386380,
+      "title": "test",
+      "status": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
