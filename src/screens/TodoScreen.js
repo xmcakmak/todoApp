@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react"
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native"
-import { CheckBox, Icon } from "@rneui/themed"
+import { FlatList, StyleSheet, Text, View } from "react-native"
+import { CheckBox } from "@rneui/themed"
 
 import InputBar from "../components/InputBar/InputBar"
 import TodoItem from "../components/TodoItem/TodoItem"
 
 export default function TodoScreen() {
 	const [todos, setTodos] = useState([])
+	const [filteredTodos, setfilteredTodos] = useState([])
 	const [text, setText] = useState("")
-	const [check1, setCheck1] = useState(false)
-	const [check2, setCheck2] = useState(false)
-	const [check3, setCheck3] = useState(false)
+	const [check1, setCheck1] = useState(true)
+	const [check2, setCheck2] = useState(true)
+	const [check3, setCheck3] = useState(true)
 
-	const renderTodo = ({ item }) => <TodoItem todo={item} />
+	const renderTodo = ({ item }) => <TodoItem todo={item} remove={removeTodo} />
 
-	const localAddress = "http://192.168.1.10:3001/todos"
+	const localAddress = "http://192.168.1.15:3001/todos"
 
 	const getTodos = async () => {
 		fetch(localAddress, {
@@ -25,7 +26,10 @@ export default function TodoScreen() {
 			},
 		})
 			.then((response) => response.json())
-			.then((json) => setTodos(json))
+			.then((json) => {
+				setTodos(json)
+				setfilteredTodos(json)
+			})
 			.catch((error) => console.error(error))
 	}
 
@@ -46,28 +50,31 @@ export default function TodoScreen() {
 			.catch((err) => console.log(err))
 	}
 
-    function checkIsInclude(checkTodoItem){
+	const removeTodo = (todoId) => {
+		
+	}
+
+    const checkIsInclude = (checkTodoItem) =>{
         const STATUS_TODO = 1, STATUS_INPROGRESS = 2, STATUS_DONE = 3
         const checks_array = [
             check1 ? STATUS_TODO : null,
             check2 ? STATUS_INPROGRESS : null,
             check3 ? STATUS_DONE : null
         ]
-        console.log(checks_array)
-        //if(chechTodoItem.status == 1){
+        //console.log("check arr:", checks_array)
         if(checks_array.includes(checkTodoItem.status)){
             return checkTodoItem
         }
     }
 
-	const checkStatus = (check, status) => {
-        console.log(check, status)
-
-       
+	const checkStatus = () => {
         const result = todos.filter(checkIsInclude)
-        //console.log(result)
-        setTodos(result)
+        setfilteredTodos(result)
     }
+
+	useEffect(() => {
+		checkStatus()
+	},[check1,check2,check3])
 
 	useEffect(() => {
 		getTodos()
@@ -82,42 +89,43 @@ export default function TodoScreen() {
 			<View style={styles.checkbox_container}>
 				<CheckBox
 					containerStyle={styles.checkbox}
+					checkedColor="#FFFFFF"
+					uncheckedColor="#FFFFFF"
+					textStyle={{color:"#FFFFFF"}}
 					center
 					title="To Do"
 					checked={check1}
 					onPress={() => {
-                        
-						setCheck1(!check1)
-                        checkStatus("check1", !check1)
-                        
+						setCheck1(!check1)        
 					}}
 				/>
 				<CheckBox
 					containerStyle={styles.checkbox}
+					checkedColor="#FFFFFF"
+					uncheckedColor="#FFFFFF"
+					textStyle={{color:"#FFFFFF"}}
 					center
 					title="In Progress"
 					checked={check2}
-					onPress={() => {
-                        
+					onPress={() => {                
                         setCheck2(!check2)
-                        checkStatus("check2", check2)
                     }}
 				/>
 				<CheckBox
 					containerStyle={styles.checkbox}
+					checkedColor="#FFFFFF"
+					uncheckedColor="#FFFFFF"
+					textStyle={{color:"#FFFFFF"}}
 					center
 					title="Done"
 					checked={check3}
 					onPress={() =>{
-                        
                         setCheck3(!check3)
-                        checkStatus("check3", check3)
-                    }
-                    }
+                    }}
 				/>
 			</View>
 			<View style={styles.flatView}>
-				<FlatList data={todos} renderItem={renderTodo} />
+				<FlatList data={filteredTodos} renderItem={renderTodo} />
 			</View>
 			<InputBar add={addTodo} text={text} setText={setText} />
 		</View>
