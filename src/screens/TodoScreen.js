@@ -9,9 +9,11 @@ export default function TodoScreen() {
 
   const renderTodo = ({ item }) => <TodoItem todo={item} />;
 
+  const localAddress = "http://192.168.1.10:3001/todos"
+
   const getTodos = async () => {
-    const local = "http://192.168.1.15:3001/todos"
-    fetch(local, {
+
+    fetch(localAddress, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -32,7 +34,7 @@ export default function TodoScreen() {
       : null;
     setText('');
 
-    fetch("http://192.168.1.15:3001/todos", {
+    fetch(localAddress, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -55,6 +57,9 @@ export default function TodoScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Todo Screen</Text>
+      </View>
+      <View>
+        
       </View>
       <View style={styles.flatView}>
         <FlatList data={todos} renderItem={renderTodo} />
