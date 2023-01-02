@@ -4,9 +4,11 @@ import React, { useState, useEffect } from "react"
 // React Native
 import { FlatList, Text, View } from "react-native"
 
+// Config
+import { TODO_STATUS } from "../../common/Enums"
+
 // Style
 import { styles } from "./TodoScreen.styles"
-
 
 // Common Component
 import InputBar from "../../components/InputBar/InputBar"
@@ -16,31 +18,28 @@ import CustomCheckBox from "../../components/CheckBox/CustomCheckBox"
 export default function TodoScreen() {
 
     // useState 
-	const [check1, setCheck1] = useState(true)
-	const [check2, setCheck2] = useState(true)
-	const [check3, setCheck3] = useState(true)
+	const [checkTodo, setCheckTodo] = useState(true)
+	const [checkInProgress, setCheckInProgress] = useState(true)
+	const [checkDone, setCheckDone] = useState(true)
 	const [filteredTodos, setfilteredTodos] = useState([])
 	const [text, setText] = useState("")
 	const [todos, setTodos] = useState([])
 
     // Definition
-    const STATUS_TODO = 1, 
-          STATUS_INPROGRESS = 2, 
-          STATUS_DONE = 3
-
 	const localAddress = "http://192.168.1.11:3001/todos"
-	const renderTodo = ({ item }) => <TodoItem todo={item} remove={removeTodo} />
 
     // useEffect
     useEffect(() => {
 		checkStatus()
-	},[check1,check2,check3])
+	},[checkTodo,checkInProgress,checkDone])
 
 	useEffect(() => {
 		getTodos()
 	}, [])
 
     // Function
+    const renderTodo = ({ item }) => <TodoItem todo={item} remove={removeTodo} />
+
 	const getTodos = async () => {
 		fetch(localAddress, {
 			method: "GET",
@@ -80,9 +79,9 @@ export default function TodoScreen() {
 
     const checkIsInclude = (checkTodoItem) =>{
         const checks_array = [
-            check1 ? STATUS_TODO : null,
-            check2 ? STATUS_INPROGRESS : null,
-            check3 ? STATUS_DONE : null
+            checkTodo ? TODO_STATUS.TODO : null,
+            checkInProgress ? TODO_STATUS.IN_PROGRESS : null,
+            checkDone ? TODO_STATUS.DONE : null
         ]
         if(checks_array.includes(checkTodoItem.status)){
             return checkTodoItem
@@ -94,34 +93,31 @@ export default function TodoScreen() {
         setfilteredTodos(result)
     }
 
-    
-
-
 	// Render
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Text style={styles.headerText}>Todo Screen</Text>
-               
+				<Text style={styles.headerText}>Todo Screen</Text>      
 			</View>
 
 			<View style={styles.checkbox_container}>
-                    <CustomCheckBox checked={check1} title={"To Do"} 
+                    <CustomCheckBox checked={checkTodo} title={"To Do"} 
                         onPress={() => {
-                            setCheck1(!check1)
+                            setCheckTodo(!checkTodo)
                         }}
                     />
-                    <CustomCheckBox checked={check2} title={"In Progress"} 
+                    <CustomCheckBox checked={checkInProgress} title={"In Progress"} 
                         onPress={() => {
-                            setCheck2(!check2)
+                            setCheckInProgress(!checkInProgress)
                         }}
                     />
-                    <CustomCheckBox checked={check3} title={"Done"} 
+                    <CustomCheckBox checked={checkDone} title={"Done"} 
                         onPress={() => {
-                            setCheck3(!check3)
+                            setCheckDone(!checkDone)
                         }}
                     />         
 			</View>
+            
 			<View style={styles.flatView}>
 				<FlatList data={filteredTodos} renderItem={renderTodo} />
 			</View>
