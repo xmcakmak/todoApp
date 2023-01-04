@@ -1,26 +1,37 @@
+export default async function apiCall({
+    baseURL,
+	config,
+	requestBody,
+	parameters,
+	contentType = "application/json",
+}) {
 
-export default async function apiCall({ config, requestBody, parameters, contentType }) {
+    let url = baseURL + config.path
 
-    const fetchOptions = {
-        method: config.method,
-        headers: {
-            "Content-Type": contentType,
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*"
-        },
-        mode: "cors",
-    }    
+	const fetchOpt = {
+		method: config.method,
+		headers: {
+			Accept: "application/json",
+			"Content-Type": contentType
+		},
+	}
 
-    if (requestBody) {
-            fetchOptions.body = JSON.stringify(requestBody)
+    if (requestBody){
+        fetchOpt.body = JSON.stringify(requestBody)
     }
 
-    const baseUrl = "http://192.168.1.11:3001/todos"
+	const response = await fetch(url, fetchOpt)
+		.then((response) => response.json())
+		.then((res) => {
+            return res
+		})
+		.catch((error) => {
+            return null
+        })
 
-    let url = baseUrl + config.path
-
-    const response = await fetch(url, fetchOptions)
-
-
+        if (response) {
+            return response
+        } else {
+            return null
+        }
 }

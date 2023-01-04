@@ -21,8 +21,8 @@ export default function App() {
 						headerShown: false,
 					}}
 				>
-					<Stack.Screen name="Todos" component={TodoScreen} />
 					<Stack.Screen name="Home" component={HomeScreen} />
+					<Stack.Screen name="Todos" component={TodoScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</Provider>

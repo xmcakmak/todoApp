@@ -14,12 +14,12 @@ const InputBar = ({text, setText, add}) => {
         onBlur={() => setBtnStyle(false)}
         style={styles.txtInput}
         placeholderTextColor={'#fff'}
-        placeholder="Yapılacak.."
+        placeholder="To Do.."
       />
       <TouchableOpacity
         onPress={add}
         style={!btnStyle ? styles.kaydetBtn : styles.kaydetBtnActive}>
-        <Text style={styles.kaydetBtnText}>Kaydet</Text>
+        <Text style={styles.kaydetBtnText}>Save</Text>
       </TouchableOpacity>
     </View>
   );
