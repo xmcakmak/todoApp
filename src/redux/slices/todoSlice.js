@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { API_STATUS } from "../../common/Enums"
-import { React } from "react"
 
 const initialState = {
 	getTodosApiStatus: API_STATUS.NONE,
 	postTodoApiStatus: API_STATUS.NONE,
+    deleteTodoApiStatus: API_STATUS.NONE,
 
 	todos: [],
 }
@@ -35,6 +35,17 @@ export const todoSlice = createSlice({
 		postTodoFailure: (state) => {
 			state.postTodoApiStatus = API_STATUS.FAILURE
 		},
+
+        // DELETE TODO
+        deleteTodoRequest: (state) => {
+            state.deleteTodoApiStatus = API_STATUS.REQUEST
+        },
+        deleteTodoSuccess: (state) => {
+            state.deleteTodoApiStatus = API_STATUS.SUCCESS  
+        },
+        deleteTodoFailure: (state) => {
+            state.deleteTodoApiStatus = API_STATUS.FAILURE
+        }
 	},
 })
 
@@ -45,7 +56,11 @@ export const {
 
 	postTodoRequest,
 	postTodoSuccess,
-	postTodoFailure
+	postTodoFailure,
+
+    deleteTodoRequest,
+    deleteTodoSuccess,
+    deleteTodoFailure,
 
 } = todoSlice.actions
 

@@ -9,6 +9,10 @@ export const API = {
         POST_TODO: {
             path: "/todos",
             method: "POST"
+        },
+        DELETE_TODO: {
+            path: "/todos/",
+            method: "DELETE"
         }
     }
 }

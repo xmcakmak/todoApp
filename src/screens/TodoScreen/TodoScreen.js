@@ -26,6 +26,7 @@ import { styles } from "./TodoScreen.styles"
 // Api
 import getTodo from "../../common/api/todo/getTodo"
 import postTodo from "../../common/api/todo/postTodo"
+import deleteTodo from "../../common/api/todo/deleteTodo"
 
 // Common Component
 import InputBar from "../../components/InputBar/InputBar"
@@ -40,6 +41,7 @@ export default function TodoScreen({ navigation }) {
 	const postTodoApiStatus = useSelector(
 		(state) => state.todo.postTodoApiStatus,
 	)
+    const deleteTodoApiStatus = useSelector((state) => state.todo.deleteTodoApiStatus)
 
 	// useState
 	const [checkTodo, setCheckTodo] = useState(true)
@@ -54,7 +56,7 @@ export default function TodoScreen({ navigation }) {
 	useEffect(() => {
 		getTodo()
 		checkStatus()
-	}, [postTodoApiStatus])
+	}, [postTodoApiStatus, deleteTodoApiStatus])
 
 	useEffect(() => {
 		checkStatus()
@@ -78,7 +80,9 @@ export default function TodoScreen({ navigation }) {
 		}
 	}
 
-	const removeTodo = (todoId) => {}
+	const removeTodo = (todoId) => {
+        deleteTodo(todoId)
+    }
 
 	const checkIsInclude = (checkTodoItem) => {
 		const checks_array = [
@@ -153,7 +157,6 @@ export default function TodoScreen({ navigation }) {
 				transparent={true}
 				visible={modalVisible}
 				onRequestClose={() => {
-					Alert.alert("Modal has been closed.")
 					setModalVisible(!modalVisible)
 				}}
 			>

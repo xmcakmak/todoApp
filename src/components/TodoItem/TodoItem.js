@@ -7,7 +7,7 @@ const TodoItem = ({todo, toggle, remove}) => {
     return (
       <View>
         <TouchableOpacity
-          style={styles.active}
+          style={[styles.active, todo.status === 1 ? styles.active : todo.status === 2 ? styles.InProgress : styles.done]}
           onLongPress={() => {
             remove(todo.id);
           }}

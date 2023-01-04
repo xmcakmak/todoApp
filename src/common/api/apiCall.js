@@ -6,7 +6,12 @@ export default async function apiCall({
 	contentType = "application/json",
 }) {
 
-    let url = baseURL + config.path
+    let url = baseURL + config.path 
+
+    if(parameters) {
+        url = url + parameters
+        console.log(url)
+    }
 
 	const fetchOpt = {
 		method: config.method,
