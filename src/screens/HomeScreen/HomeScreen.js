@@ -2,23 +2,23 @@
 import React, { useState, useEffect } from "react"
 
 // React Native
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
 // Redux
 import { useSelector } from "react-redux"
 
 // Config
-import { TODO_STATUS, API_STATUS } from "../../common/Enums"
+import { TODO_STATUS } from "@common/Enums"
 
 // Style
 import { styles } from "./HomeScreen.styles"
 
 // Api
-import getTodo from "../../common/api/todo/getTodo"
+import getTodo from "@common/api/todo/getTodo"
 
 // Common Component
-import CustomButton from "../../components/CustomButton/CustomButton"
-import CategoryCard from "../../components/CategoryCard/CategoryCard"
+import CustomButton from "@components/CustomButton/CustomButton"
+import CategoryCard from "@components/CategoryCard/CategoryCard"
 
 export default function HomeScreen({ navigation }) {
 

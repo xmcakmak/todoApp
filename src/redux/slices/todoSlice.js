@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { API_STATUS } from "../../common/Enums"
+import { API_STATUS } from "@common/Enums"
 
 const initialState = {
 	getTodosApiStatus: API_STATUS.NONE,

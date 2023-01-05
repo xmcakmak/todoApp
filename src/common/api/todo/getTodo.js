@@ -1,9 +1,9 @@
 // Config
-import { API } from "../../Config"
+import { API } from "@common/Config"
 
 // Redux
-import store from "../../../redux/store"
-import { getTodosRequest, getTodosSuccess, getTodosFailure } from "../../../redux/slices/todoSlice"
+import store from "@redux/store"
+import { getTodosRequest, getTodosSuccess, getTodosFailure } from "@redux/slices/todoSlice"
 
 // Helper
 import apiCall from "../apiCall"

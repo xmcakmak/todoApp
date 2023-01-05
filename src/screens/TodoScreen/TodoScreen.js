@@ -18,20 +18,20 @@ import { useSelector } from "react-redux"
 import { Icon } from "@rneui/themed"
 
 // Config
-import { TODO_STATUS, API_STATUS } from "../../common/Enums"
+import { TODO_STATUS, API_STATUS } from "@common/Enums"
 
 // Style
 import { styles } from "./TodoScreen.styles"
 
 // Api
-import getTodo from "../../common/api/todo/getTodo"
-import postTodo from "../../common/api/todo/postTodo"
-import deleteTodo from "../../common/api/todo/deleteTodo"
+import getTodo from "@common/api/todo/getTodo"
+import postTodo from "@common/api/todo/postTodo"
+import deleteTodo from "@common/api/todo/deleteTodo"
 
 // Common Component
-import InputBar from "../../components/InputBar/InputBar"
-import TodoItem from "../../components/TodoItem/TodoItem"
-import CustomCheckBox from "../../components/CheckBox/CustomCheckBox"
+import InputBar from "@components/InputBar/InputBar"
+import TodoItem from "@components/TodoItem/TodoItem"
+import CustomCheckBox from "@components/CheckBox/CustomCheckBox"
 import { TouchableOpacity } from "react-native"
 
 export default function TodoScreen({ navigation }) {
