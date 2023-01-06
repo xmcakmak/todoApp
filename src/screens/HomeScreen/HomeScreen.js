@@ -8,7 +8,7 @@ import { Text, View } from "react-native"
 import { useSelector } from "react-redux"
 
 // Config
-import { TODO_STATUS } from "@common/Enums"
+import { TODO_STATUS, COLOR } from "@common/Enums"
 
 // Style
 import { styles } from "./HomeScreen.styles"
@@ -26,10 +26,10 @@ export default function HomeScreen({ navigation }) {
     const todos = useSelector((state) => state.todo.todos)
 
     // useState
-    const [categoryTodoCount, setCategoryTodoCount] = useState(0)
-    const [categoryInProgressCount, setCategoryInProgressCount] = useState(0)
-    const [categoryDoneCount, setCategoryDoneCount] = useState(0)
-    const [completed, setCompleted] = useState(0)
+    const [todoCount, setTodoCount] = useState(0) 
+    const [inProgressCount, setInProgressCount] = useState(0)
+    const [doneCount, setDoneCount] = useState(0)
+    const [completed, setCompleted] = useState(0) 
 
     useEffect(() => {
         getTodo()
@@ -37,27 +37,25 @@ export default function HomeScreen({ navigation }) {
 
     // useEffect
     useEffect(() => {
-        let categoryTodo = 0
-        let categoryInProgress = 0
-        let categoryDone = 0
-        let completedStatus = todos.length
-        todos.map((todo) =>{
-            if(todo.status === TODO_STATUS.TODO){
-                categoryTodo += 1
-            } else if(todo.status === TODO_STATUS.IN_PROGRESS){
-                categoryInProgress += 1
-            } else {
-                categoryDone += 1
-            }
-        })
-        setCategoryTodoCount(categoryTodo)
-        setCategoryInProgressCount(categoryInProgress)
-        setCategoryDoneCount(categoryDone)
+        const categoryTodo = todos.filter(todo => todo.status === TODO_STATUS.TODO).length
+        const categoryInProgress = todos.filter(todo => todo.status === TODO_STATUS.IN_PROGRESS).length
+        const categoryDone = todos.filter(todo => todo.status === TODO_STATUS.DONE).length
 
-        completedStatus = Math.ceil((categoryDone / completedStatus) * 100)
-        setCompleted(completedStatus)
+        let percentageOfCompleted = todos.length 
+    
+        setTodoCount(categoryTodo)
+        setInProgressCount(categoryInProgress)
+        setDoneCount(categoryDone)
+
+        percentageOfCompleted = Math.ceil((categoryDone / percentageOfCompleted) * 100)
+        setCompleted(percentageOfCompleted)
 
     }, [todos]);
+
+    // Function
+    const handleNavigateTodos = () => {
+        navigation.navigate("Todos")
+    }
 
 
 	// render
@@ -66,13 +64,13 @@ export default function HomeScreen({ navigation }) {
 			<View style={styles.header}>
 				<Text style={styles.headerText}>Home</Text>
 			</View>
-            <View style={{ flex: 1, backgroundColor: "#80808054", borderRadius: 15, padding: 25, marginBottom: 25 }}>
+            <View style={styles.contentContainer}>
                 <Text style={styles.insideTitle}>Category</Text>
 
-                <View style={styles.categoriesContainer}>
-                    <CategoryCard color={"red"} title={"Todo"} count={categoryTodoCount} />
-                    <CategoryCard color={"orange"} title={"InProgress"} count={categoryInProgressCount} />
-                    <CategoryCard color={"green"} title={"Done"} count={categoryDoneCount} />
+                <View style={styles.categoryContainer}>
+                    <CategoryCard color={COLOR.RED} title={"Todo"} count={todoCount} />
+                    <CategoryCard color={COLOR.ORANGE} title={"InProgress"} count={inProgressCount} />
+                    <CategoryCard color={COLOR.GREEN} title={"Done"} count={doneCount} />
                 </View>
                 <Text style={styles.insideTitle}>Status</Text>
 
@@ -83,9 +81,9 @@ export default function HomeScreen({ navigation }) {
                 </View>
 
                 <Text style={styles.insideTitle}>Total</Text>
-                <CategoryCard color={"gray"} title={"asd"} isTotal={true} count={todos.length} />
+                <CategoryCard color={COLOR.GRAY} isTotal={true} count={todos.length} />
             </View>
-            <CustomButton title={"Todos"} onPress={() => navigation.navigate("Todos")} />
+            <CustomButton title={"Todos"} onPress={handleNavigateTodos} />
 		</View>
 	)
 }

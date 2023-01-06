@@ -4,7 +4,7 @@ import { Text, View } from "react-native"
 // Style
 import { styles } from "./CategoryCard.styles"
 
-export default function CategoryCard({ color, title, count, isTotal}) {
+export default function CategoryCard({ color, title, count, isTotal}) { // propTypes
     return(
         <View style={[styles.categoryCard, {backgroundColor: color}]}>
                 {isTotal ? (

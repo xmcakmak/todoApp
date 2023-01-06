@@ -10,3 +10,16 @@ export const TODO_STATUS = {
     IN_PROGRESS: 2,
     DONE: 3
 }
+
+export const COLOR = {
+    RED: "#FF0000",
+    ORANGE: "#FFA500",
+    GREEN: "#008000",
+    GRAY: "#808080"
+}
+
+export const TITLE = {
+    TODO: "To do",
+    IN_PROGRESS: "In progress",
+    DONE: "Done"
+}

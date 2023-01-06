@@ -11,6 +11,13 @@ export const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		marginTop: 15,
 	},
+	contentContainer: {
+		flex: 1,
+		backgroundColor: "#80808054",
+		borderRadius: 15,
+		padding: 25,
+		marginBottom: 25,
+	},
 	headerText: {
 		color: "orange",
 		fontSize: 35,
@@ -27,7 +34,7 @@ export const styles = StyleSheet.create({
 		fontWeight: "bold",
 		padding: 10,
 	},
-	categoriesContainer: {
+	categoryContainer: {
 		//flex: 1,
 		flexDirection: "row",
 		justifyContent: "center",

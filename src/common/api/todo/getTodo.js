@@ -15,7 +15,7 @@ export default async function getTodo(){
         baseURL: API.BASE_URL,
         config: API.TODO.GET_TODOS
     })
-
+    //console.table(response)
     if(response){
         store.dispatch(getTodosSuccess(response))
     } else{

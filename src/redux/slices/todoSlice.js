@@ -4,7 +4,8 @@ import { API_STATUS } from "@common/Enums"
 const initialState = {
 	getTodosApiStatus: API_STATUS.NONE,
 	postTodoApiStatus: API_STATUS.NONE,
-    deleteTodoApiStatus: API_STATUS.NONE,
+	deleteTodoApiStatus: API_STATUS.NONE,
+	updateTodoApiStatus: API_STATUS.NONE,
 
 	todos: [],
 }
@@ -36,16 +37,27 @@ export const todoSlice = createSlice({
 			state.postTodoApiStatus = API_STATUS.FAILURE
 		},
 
-        // DELETE TODO
-        deleteTodoRequest: (state) => {
-            state.deleteTodoApiStatus = API_STATUS.REQUEST
-        },
-        deleteTodoSuccess: (state) => {
-            state.deleteTodoApiStatus = API_STATUS.SUCCESS  
-        },
-        deleteTodoFailure: (state) => {
-            state.deleteTodoApiStatus = API_STATUS.FAILURE
-        }
+		// UPDATE TODO
+		updateTodoRequest: (state) => {
+			state.postTodoApiStatus = API_STATUS.REQUEST
+		},
+		updateTodoSuccess: (state) => {
+			state.postTodoApiStatus = API_STATUS.SUCCESS
+		},
+		updateTodoFailure: (state) => {
+			state.postTodoApiStatus = API_STATUS.FAILURE
+		},
+
+		// DELETE TODO
+		deleteTodoRequest: (state) => {
+			state.deleteTodoApiStatus = API_STATUS.REQUEST
+		},
+		deleteTodoSuccess: (state) => {
+			state.deleteTodoApiStatus = API_STATUS.SUCCESS
+		},
+		deleteTodoFailure: (state) => {
+			state.deleteTodoApiStatus = API_STATUS.FAILURE
+		},
 	},
 })
 
@@ -58,10 +70,14 @@ export const {
 	postTodoSuccess,
 	postTodoFailure,
 
-    deleteTodoRequest,
-    deleteTodoSuccess,
-    deleteTodoFailure,
+	deleteTodoRequest,
+	deleteTodoSuccess,
+	deleteTodoFailure,
 
+	updateTodoRequest,
+	updateTodoSuccess,
+	updateTodoFailure,
+    
 } = todoSlice.actions
 
 export default todoSlice.reducer

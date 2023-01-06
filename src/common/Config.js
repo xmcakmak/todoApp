@@ -13,6 +13,10 @@ export const API = {
         DELETE_TODO: {
             path: "/todos/",
             method: "DELETE"
+        },
+        PUT_TODO: {
+            path: "/todos/",
+            method: "PUT"
         }
     }
 }

@@ -11,7 +11,6 @@ import apiCall from "../apiCall"
 export default async function deleteTodo( todoId ){
 
     store.dispatch(deleteTodoRequest())
-    console.log("buraya girdi" + todoId)
 
     //let parameters =  todoId 
 

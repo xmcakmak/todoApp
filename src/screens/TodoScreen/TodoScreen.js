@@ -7,8 +7,7 @@ import {
 	Text,
 	View,
 	ActivityIndicator,
-	Modal,
-	Pressable,
+    TouchableOpacity
 } from "react-native"
 
 // Redux
@@ -18,7 +17,7 @@ import { useSelector } from "react-redux"
 import { Icon } from "@rneui/themed"
 
 // Config
-import { TODO_STATUS, API_STATUS } from "@common/Enums"
+import { TODO_STATUS, API_STATUS, COLOR, TITLE } from "@common/Enums"
 
 // Style
 import { styles } from "./TodoScreen.styles"
@@ -27,12 +26,14 @@ import { styles } from "./TodoScreen.styles"
 import getTodo from "@common/api/todo/getTodo"
 import postTodo from "@common/api/todo/postTodo"
 import deleteTodo from "@common/api/todo/deleteTodo"
+import updateTodo from "@common/api/todo/updateTodo"
 
 // Common Component
 import InputBar from "@components/InputBar/InputBar"
-import TodoItem from "@components/TodoItem/TodoItem"
+import TodoItem from "@components/TodoItem/TodoItem" // List Item şeklinde isimlendir 
 import CustomCheckBox from "@components/CheckBox/CustomCheckBox"
-import { TouchableOpacity } from "react-native"
+import CustomModal from "@components/Modal/CustomModal"
+
 
 export default function TodoScreen({ navigation }) {
 	// useSelector
@@ -42,33 +43,36 @@ export default function TodoScreen({ navigation }) {
 		(state) => state.todo.postTodoApiStatus,
 	)
     const deleteTodoApiStatus = useSelector((state) => state.todo.deleteTodoApiStatus)
+    const updateTodoApiStatus = useSelector((state) => state.todo.updateTodoApiStatus)
 
 	// useState
-	const [checkTodo, setCheckTodo] = useState(true)
-	const [checkInProgress, setCheckInProgress] = useState(true)
+	const [statusTodo, setStatusTodo] = useState(true) 
+	const [checkInProgress, setCheckInProgress] = useState(true) 
 	const [checkDone, setCheckDone] = useState(true)
-	const [modalVisible, setModalVisible] = useState(false)
 
-	const [text, setText] = useState("")
+	const [modalVisible, setModalVisible] = useState(false)
+    const [modalTitle, setModalTitle] = useState("")
+
+	const [text, setText] = useState("") // 
 	const [filteredTodos, setfilteredTodos] = useState([])
 
 	// useEffect
 	useEffect(() => {
 		getTodo()
 		checkStatus()
-	}, [postTodoApiStatus, deleteTodoApiStatus])
+	}, [postTodoApiStatus, deleteTodoApiStatus, updateTodoApiStatus])
 
 	useEffect(() => {
 		checkStatus()
-	}, [checkTodo, checkInProgress, checkDone])
+	}, [statusTodo, checkInProgress, checkDone])
 
 	useEffect(() => {
 		setfilteredTodos(todos)
 	}, [todos])
 
 	// Function
-	const renderTodo = ({ item }) => (
-		<TodoItem todo={item} remove={removeTodo} />
+	const handleRenderItemCategory = ({ item }) => (
+		<TodoItem todo={item} toggle={toggleTodo} remove={removeTodo} />
 	)
 
 	const addTodo = () => {
@@ -76,6 +80,7 @@ export default function TodoScreen({ navigation }) {
 			postTodo({ title: text, status: TODO_STATUS.TODO })
 			setText("")
 		} else {
+            setModalTitle("Todo girmelisiniz !")
 			setModalVisible(true)
 		}
 	}
@@ -84,9 +89,19 @@ export default function TodoScreen({ navigation }) {
         deleteTodo(todoId)
     }
 
-	const checkIsInclude = (checkTodoItem) => {
+    const toggleTodo = (todo) => {
+        setModalVisible(true)
+        updateTodo({ todo: todo, status: TODO_STATUS.DONE }) 
+    }
+
+    const checkStatus = () => {
+		const result = todos.filter(checkIsInclude)
+		setfilteredTodos(result)
+	}
+
+	const checkIsInclude = (checkTodoItem) => { 
 		const checks_array = [
-			checkTodo ? TODO_STATUS.TODO : null,
+			statusTodo ? TODO_STATUS.TODO : null,
 			checkInProgress ? TODO_STATUS.IN_PROGRESS : null,
 			checkDone ? TODO_STATUS.DONE : null,
 		]
@@ -95,14 +110,21 @@ export default function TodoScreen({ navigation }) {
 		}
 	}
 
-	const checkStatus = () => {
-		const result = todos.filter(checkIsInclude)
-		setfilteredTodos(result)
+	const navigateBack = () => {
+		navigation.navigate("Home") 
 	}
 
-	const navigateBack = () => {
-		navigation.navigate("Home")
-	}
+    const handleSetStatusTodo = () => {
+        setStatusTodo(!statusTodo)
+    }
+
+    const handleSetInProgress = () => {
+        setCheckInProgress(!checkInProgress)
+    }
+
+    const handleSetDone = () => {
+        setCheckDone(!checkDone) 
+    }
 
 	// Render
 	return (
@@ -116,7 +138,7 @@ export default function TodoScreen({ navigation }) {
 						onPress={navigateBack}
 					>
 						<Icon
-							color="orange"
+							color={COLOR.ORANGE} 
 							name="arrow-left"
 							type="font-awesome"
 							style={{
@@ -131,55 +153,28 @@ export default function TodoScreen({ navigation }) {
 
 			<View style={styles.checkbox_container}>
 				<CustomCheckBox
-					checked={checkTodo}
-					title={"To Do"}
-					onPress={() => {
-						setCheckTodo(!checkTodo)
-					}}
+					checked={statusTodo}
+					title={TITLE.TODO} 
+					onPress={handleSetStatusTodo}
 				/>
 				<CustomCheckBox
 					checked={checkInProgress}
-					title={"In Progress"}
-					onPress={() => {
-						setCheckInProgress(!checkInProgress)
-					}}
+					title={TITLE.IN_PROGRESS}
+					onPress={handleSetInProgress}
 				/>
 				<CustomCheckBox
 					checked={checkDone}
-					title={"Done"}
-					onPress={() => {
-						setCheckDone(!checkDone)
-					}}
+					title={TITLE.DONE}
+					onPress={handleSetDone}
 				/>
 			</View>
-			<Modal
-				//animationType="slide"
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible)
-				}}
-			>
-				<View style={styles.centeredView}>
-					<View style={styles.modalView}>
-						<Text style={styles.modalText}>
-							Metin girmelisiniz!
-						</Text>
-						<Pressable
-							style={[styles.button, styles.buttonClose]}
-							onPress={() => setModalVisible(!modalVisible)}
-						>
-							<Text style={styles.textStyle}>Tamam</Text>
-						</Pressable>
-					</View>
-				</View>
-			</Modal>
+			<CustomModal title={modalTitle} mod={false} modalVisible={modalVisible} setModalVisible={setModalVisible} /> 
 
 			<View style={styles.flatView}>
 				{todosApiStatus === API_STATUS.REQUEST ? (
-					<ActivityIndicator size="large" color={"#64ae51"} />
+					<ActivityIndicator size="large" color={COLOR.GREEN} />
 				) : (
-					<FlatList data={filteredTodos} renderItem={renderTodo} />
+					<FlatList data={filteredTodos} renderItem={handleRenderItemCategory} />
 				)}
 			</View>
 			<InputBar add={addTodo} text={text} setText={setText} />
