@@ -7,7 +7,7 @@ This project made with React Native & bootstrapped with [Expo](https://docs.expo
 
 In the project directory, you can run:
 
-`npm install` & `npm start` 
+### `npm install` & `npm start` 
 
 
 ## API Reference
